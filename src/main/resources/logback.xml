@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+    <!--<property name="LOG_PATH" value="${catalina.home}${file.separator}logs" />-->
+    <property name="FILE_NAME" value="device-manage"/>
+    <property name="CHARSET" value="UTF-8"/>
+    <property name="log.maxHistory" value="30"/>
+
+    <!-- 输出到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>
+                <!--格式化输出：%d表示日期，%t表示线程名, %p表示输出优先级 %c表示输出所属类目 %L表示代码行目, %m：日志消息，%n是换行符-->
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] [%c] [%L] - %m%n
+            </pattern>
+            <charset class="java.nio.charset.Charset">${CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- 输出到文件 -->
+    <appender name="FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${FILE_NAME}.log</file>
+        <!-- ${LOG_PATH}${file.separator} -->
+        <append>true</append>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] [%c] [%L] - %m%n
+            </pattern>
+            <charset class="java.nio.charset.Charset">${CHARSET}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_PATH}${file.separator}${FILE_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 输出到文件 -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- ${LOGPATH}${file.separator} -->
+        <file>${FILE_NAME}-error.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%p] [%c] [%L] - %m%n
+            </pattern>
+            <charset class="java.nio.charset.Charset">${CHARSET}</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_PATH}${file.separator}${FILE_NAME}-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE_LOG"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </root>
+</configuration>
