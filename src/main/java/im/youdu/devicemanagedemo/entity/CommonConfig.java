@@ -25,6 +25,8 @@ public class CommonConfig {
      */
     private List<String> ipList;
 
+    private List<String> whiteList;
+
     /**
      * 限定各端设备数
      * 在开启自动授权时生效
@@ -43,6 +45,7 @@ public class CommonConfig {
                 "authMethod=" + authMethod +
                 ", autoAuth=" + autoAuth +
                 ", ipList=" + ipList +
+                ", whiteList=" + whiteList +
                 ", deviceNums=" + deviceNums +
                 ", thirdAuthUrl='" + thirdAuthUrl + '\'' +
                 '}';
@@ -86,5 +89,13 @@ public class CommonConfig {
 
     public void setDeviceNums(Map<String, Integer> deviceNums) {
         this.deviceNums = deviceNums;
+    }
+
+    public List<String> getWhiteList() {
+        return whiteList;
+    }
+
+    public void setWhiteList(List<String> whiteList) {
+        this.whiteList = whiteList;
     }
 }

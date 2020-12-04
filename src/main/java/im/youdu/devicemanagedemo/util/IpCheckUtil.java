@@ -21,12 +21,14 @@ public class IpCheckUtil {
     public boolean ipCheck(String ip, List<String> list) {
         if (ipCache == null) {
             ipCache = new ArrayList<>();
-            for (String str : list) {
-                IpGroup ipGroup = new IpGroup(str);
-                if (ipGroup.getIpStart() == null) {
-                    continue;
+            if (list != null) {
+                for (String str : list) {
+                    IpGroup ipGroup = new IpGroup(str);
+                    if (ipGroup.getIpStart() == null) {
+                        continue;
+                    }
+                    ipCache.add(ipGroup);
                 }
-                ipCache.add(ipGroup);
             }
         }
         for (IpGroup ipGroup : ipCache) {
@@ -42,7 +44,7 @@ public class IpCheckUtil {
             long ipLo = ipToLong(InetAddress.getByName(ipGroup.getIpStart()));
             long ipCheck = ipToLong(InetAddress.getByName(ipToCheck));
             if (ipGroup.getIpEnd() == null) {
-                return ipCheck >= ipLo;
+                return ipCheck == ipLo;
             }
             long ipHi = ipToLong(InetAddress.getByName(ipGroup.getIpEnd()));
 

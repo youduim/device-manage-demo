@@ -49,7 +49,7 @@ public class AuthController {
 
         boolean hasAuthRecord = authService.findAuthByGidAndDevId(record.getGid(), record.getDeviceId());
         if (hasAuthRecord) {
-            logger.info("hasAutoAuthRecord:{},account:{} is allow to login", true,record.getAccount());
+            logger.info("hasAutoAuthRecord:{},account:{} is allow to login", true, record.getAccount());
             return Response.getAllowResponse();
         }
         //1. 检测自动授权
@@ -58,17 +58,25 @@ public class AuthController {
             boolean autoAuth = DeviceCheckUtil.deviceCheck(record.getDeviceType(), alreadyAuthSize, commonConfig.getDeviceNums());
             if (autoAuth) {
                 Auth auth = new Auth(record);
-                auth.setStatus(Const.AUTH_STATUS_AUTO);
+//                auth.setStatus(Const.AUTH_STATUS_AUTO);
                 authService.addAuth(auth);
-                logger.info("device check allow account:{} to login",record.getAccount());
+                logger.info("device check allow account:{} to login", record.getAccount());
                 return Response.getAllowResponse();
             }
             IpCheckUtil ipCheckUtil = new IpCheckUtil();
             autoAuth = ipCheckUtil.ipCheck(record.getIp(), commonConfig.getIpList());
             if (autoAuth) {
                 authService.addAuth(new Auth(record));
-                logger.info("ip check allow account:{} to login",record.getAccount());
+                logger.info("ip check allow account:{} to login", record.getAccount());
                 return Response.getAllowResponse();
+            }
+            if (commonConfig.getWhiteList() != null) {
+                autoAuth = commonConfig.getWhiteList().contains(record.getAccount());
+                if (autoAuth) {
+                    authService.addAuth(new Auth(record));
+                    logger.info("white list allow account:{} to login", record.getAccount());
+                    return Response.getAllowResponse();
+                }
             }
         }
 
