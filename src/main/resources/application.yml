@@ -1,0 +1,43 @@
+server:
+  port: 8001
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:13307/devicemanage?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+      show-sql: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+logging:
+  level:
+    root: info
+
+config:
+  # 服务功能配置项
+  # 授权方式[0:拒绝登录 1:短信验证码登录 2:第三方验证登录 3:管理员审批]
+  auth-method: 0
+  # 第三方授权URL地址
+  third-auth-url: https://youdu.im
+  # 是否自动授权
+#  auto-auth: true
+  # 自动授权 ip过滤规则
+#  ip-list: 10.0.0.172
+  # 自动授权 授权白名单
+#  white-list: admin,bill,测试
+  # 自动授权 各平台自动授权设备数
+  device-nums.Windows: 0
+  device-nums.iOS: 0
+  device-nums.Pad: 0
+  device-nums.Android: 0
+  device-nums.Linux: 0

@@ -58,7 +58,7 @@ public class AuthController {
             boolean autoAuth = DeviceCheckUtil.deviceCheck(record.getDeviceType(), alreadyAuthSize, commonConfig.getDeviceNums());
             if (autoAuth) {
                 Auth auth = new Auth(record);
-//                auth.setStatus(Const.AUTH_STATUS_AUTO);
+                auth.setStatus(Const.AUTH_STATUS_AUTO);
                 authService.addAuth(auth);
                 logger.info("device check allow account:{} to login", record.getAccount());
                 return Response.getAllowResponse();
